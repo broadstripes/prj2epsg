@@ -1,5 +1,4 @@
-FROM jetty
-USER root
+FROM openjdk:8-jdk-stretch
 
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get -y install maven
@@ -11,8 +10,7 @@ WORKDIR /build
 
 RUN mvn install
 
-RUN cp -R target/prj2epsg-1.0-SNAPSHOT /var/lib/jetty/webapps/ROOT
 
-WORKDIR /var/lib/jetty/
+FROM jetty:jre8
 
-USER jetty
+COPY --from=0 /build/target/prj2epsg-1.0-SNAPSHOT /var/lib/jetty/webapps/ROOT
