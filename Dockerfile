@@ -1,7 +1,6 @@
-FROM openjdk:8-jdk-stretch
+FROM eclipse-temurin:8-jdk-jammy
 
-RUN apt-get update \
-    && DEBIAN_FRONTEND=noninteractive apt-get -y install maven
+RUN apt-get update && apt-get -y install maven
 
 ADD ./pom.xml /build/pom.xml
 ADD ./src /build/src
@@ -9,7 +8,6 @@ ADD ./src /build/src
 WORKDIR /build
 
 RUN mvn install
-
 
 FROM jetty:jre8
 
